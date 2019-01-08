@@ -4,10 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.DomEvent;
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.shared.Registration;
 
 @JavaScript("/webjars/vis/4.21.0/dist/vis.js")
 @StyleSheet("/webjars/vis/4.21.0/dist/vis-timeline-graph2d.min.css")
@@ -21,6 +26,26 @@ public class Timeline extends Div {
     	this.items = Arrays.asList(items);
     	String initFunction = createInitFunction();
 		UI.getCurrent().getPage().executeJavaScript(initFunction , this);	
+	}
+	
+	public void focus(Item item) {
+		UI.getCurrent().getPage().executeJavaScript("$0.timeline.focus($1)", this,item.getId());
+	}
+
+	@DomEvent("click")
+	static public class ItemClickEvent extends ComponentEvent<Timeline> {
+		private Item item;
+	    public ItemClickEvent(Timeline source, boolean fromClient, @EventData("element.timeline.getEventProperties(event).item") int id) {
+	        super(source, fromClient);
+	        source.items.stream().filter(item->item.getId().equals(id)).findFirst().ifPresent(founditem->this.item=founditem);
+	    }
+		public Item getItem() {
+			return item;
+		}
+	}
+
+	public Registration addItemClickListener(ComponentEventListener<ItemClickEvent> listener) {
+		return addListener(ItemClickEvent.class, listener);
 	}
 
 	private String createInitFunction() {
@@ -38,5 +63,4 @@ public class Timeline extends Div {
 		return function;
 	}
 
-	
 }
