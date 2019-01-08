@@ -67,11 +67,11 @@
         <!-- The following dependency is generated using webjars.org. If 
              it does not resolve, go to https://www.webjars.org and deploy it as "Bower GitHub"
              -->
-        <dependency>
-            <groupId>org.webjars.bowergithub.polymerelements</groupId>
-            <artifactId>paper-slider </artifactId>
-            <version>2.0.9</version>
-        </dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>vis</artifactId>
+			<version>4.21.0</version>
+		</dependency>
     </dependencies>
 
     <build>
