@@ -9,12 +9,11 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DomEvent;
 import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.shared.Registration;
 
-@JavaScript("/webjars/vis/4.21.0/dist/vis.js")
+@SuppressWarnings("serial")
 @StyleSheet("/webjars/vis/4.21.0/dist/vis-timeline-graph2d.min.css")
 public class Timeline extends Div {
 
@@ -25,13 +24,15 @@ public class Timeline extends Div {
     	setId("visualization");
     	this.items = Arrays.asList(items);
     	String initFunction = createInitFunction();
-		UI.getCurrent().getPage().executeJavaScript(initFunction , this);	
+		UI.getCurrent().getPage().executeJs(initFunction , this);
+		UI.getCurrent().getPage().addJavaScript("/webjars/vis/4.21.0/dist/vis.js");
 	}
 	
 	public void focus(Item item) {
-		UI.getCurrent().getPage().executeJavaScript("$0.timeline.focus($1)", this,item.getId());
+		UI.getCurrent().getPage().executeJs("$0.timeline.focus($1)", this,item.getId());
 	}
 
+	@SuppressWarnings("serial")
 	@DomEvent("click")
 	static public class ItemClickEvent extends ComponentEvent<Timeline> {
 		private Item item;

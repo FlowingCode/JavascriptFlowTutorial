@@ -8,7 +8,7 @@
     <description>Integration of vis.js timeline component for Vaadin platform</description>
 
     <properties>
-        <vaadin.version>12.0.3</vaadin.version>
+        <vaadin.version>14.8.20</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-core</artifactId>
+            <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -112,6 +112,23 @@
                         <resourceBase>src/test/webjar-debug/META-INF/resources</resourceBase>
                     </webAppConfig>
                 </configuration>
+            </plugin>
+            <!--
+                Take care of synchronizing java dependencies and imports in
+                package.json and main.js files.
+                It also creates webpack.config.js if not exists yet.
+            -->
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-frontend</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
